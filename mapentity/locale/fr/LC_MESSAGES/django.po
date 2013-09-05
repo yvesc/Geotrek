@@ -140,7 +140,7 @@ msgstr "PDF"
 
 #: templates/mapentity/entity_detail.html:22
 msgid "Properties"
-msgstr "Priopriétés"
+msgstr "Propriétés"
 
 #: templates/mapentity/entity_detail.html:24
 msgid "Structure"
