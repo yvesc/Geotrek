@@ -1,5 +1,5 @@
 /*
- * This file contains styles that are specific to Geotrek, 
+ * This file contains styles that are specific to Geotrek,
  * with no reason to be in MapEntity.
  * (paths, aggregations, altimetric profile, etc.)
  */
@@ -7,6 +7,7 @@
 
 
 .marker-snapped { background-image: url('core/images/marker-snap.png') }
+.leaflet-editing-icon.marker-snapped { background-image: none; background-color: yellow; }
 .marker-source.marker-snapped { background-image: url('core/images/marker-source-snap.png') }
 .marker-target.marker-snapped { background-image: url('core/images/marker-target-snap.png') }
 
