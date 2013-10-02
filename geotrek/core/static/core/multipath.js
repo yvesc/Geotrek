@@ -1,8 +1,77 @@
+L.Mixin.ActivableControl = {
+    activable: function (state) {
+        /**
+         * Allow to prevent user to activate the control.
+         * (it is like setEnable(state), but ``enable`` word is used
+         *  for handler already)
+         */
+        this._activable = state;
+        if (this._container) {
+            if (state)
+                L.DomUtil.removeClass(this._container, 'disabled');
+            else
+                L.DomUtil.addClass(this._container, 'disabled');
+        }
+    },
+
+    toggle: function() {
+        this._activable = !!this._activable;  // from undefined to false :)
+
+        if (!this._activable)
+            return;  // do nothing if not activable
+
+        if (this.handler.enabled()) {
+            this.handler.disable.call(this.handler);
+            this.handler.fire('disabled');
+            L.DomUtil.removeClass(this._container, 'enabled');
+        } else {
+            this.handler.enable.call(this.handler);
+            this.handler.fire('enabled');
+            L.DomUtil.addClass(this._container, 'enabled');
+        }
+    },
+};
+
+
+L.Control.ExclusiveActivation = L.Class.extend({
+    initialize: function () {
+        this._controls = [];
+    },
+
+    add: function (control) {
+        this._controls.push(control);
+        var self = this;
+        control.activable(true);
+        control.handler.on('enabled', function (e) {
+            // When this control is enabled, activate this one,
+            // and disable the others !
+            $.each(self._controls, function (i, c) {
+                if (c != control) {
+                    c.activable(false);
+                }
+            });
+        }, this);
+
+        control.handler.on('disabled', function (e) {
+            // When this control is disabled, re-enable the others !
+            // Careful, this will not take care of previous state :)
+            $.each(self._controls, function (i, c) {
+                c.activable(true);
+            });
+        }, this);
+    },
+});
+
+
 L.Control.TopologyPoint = L.Control.extend({
     includes: L.Mixin.ActivableControl,
 
+    statics: {
+        TITLE: 'Point',
+    },
+
     options: {
-        position: 'topright',
+        position: 'topleft',
     },
 
     initialize: function (map, options) {
@@ -16,7 +85,7 @@ L.Control.TopologyPoint = L.Control.extend({
         this._container = L.DomUtil.create('div', 'leaflet-bar leaflet-control-zoom');
         var link = L.DomUtil.create('a', 'leaflet-control-draw-marker', this._container);
         link.href = '#';
-        link.title = 'Point';
+        link.title = L.Control.TopologyPoint.TITLE;
         var self = this;
         L.DomEvent
                 .addListener(link, 'click', L.DomEvent.stopPropagation)
@@ -76,7 +145,7 @@ L.Control.Multipath = L.Control.extend({
         this._container = L.DomUtil.create('div', 'leaflet-bar leaflet-control-zoom');
         var link = L.DomUtil.create('a', 'leaflet-control-zoom-out multipath-control', this._container);
         link.href = '#';
-        link.title = 'Multipath';
+        link.title = L.Control.Multipath.TITLE;
 
         var self = this;
         L.DomEvent
@@ -105,7 +174,7 @@ L.ActivableMarker = L.Marker.extend({
         this.activate_cbs = [];
         this.deactivate_cbs = [];
     },
-    
+
     activated: function() {
         return this._activated;
     },
@@ -118,7 +187,7 @@ L.ActivableMarker = L.Marker.extend({
             this._activated = true;
         }
     },
-    
+
     deactivate: function() {
         if (this._activated) {
             for (var i = 0; i < this.deactivate_cbs.length; i++) {
@@ -155,11 +224,11 @@ L.Handler.MultiPath = L.Handler.extend({
         this.idToLayer = function(id) {
             return graph_layer.getLayer(id);
         };
-        
-        
+
+
         /*
          * Draggable via steps
-         * 
+         *
          * The following piece of code was also taken from formfield.js
          * It place is here, but needs refactoring to become elegant.
          */
@@ -209,7 +278,7 @@ L.Handler.MultiPath = L.Handler.extend({
         this.reset();
         this.enable();
 
-        
+
         console.debug('setState('+JSON.stringify({start:{pk:state.start_layer.properties.pk,
                                                          latlng:state.start_ll.toString()},
                                                   end:  {pk:state.end_layer.properties.pk,
@@ -439,7 +508,7 @@ L.Handler.MultiPath = L.Handler.extend({
          * Topo is a list of sub-topologies.
          *
          *  X--+--+---O-------+----O--+---+--X
-         *  
+         *
          * Each sub-topoogy is a way between markers. The first marker
          * of the first sub-topology is the beginning, the last of the last is the end.
          * All others are intermediary points (via markers)
@@ -656,7 +725,7 @@ L.Handler.MultiPath = L.Handler.extend({
     onComputedPaths: function(data) {
         var self = this;
         var topology = Geotrek.TopologyHelper.buildTopologyFromComputedPath(this.idToLayer, data);
-        
+
         this.showPathGeom(topology.layer);
         this.fire('computed_topology', {topology:topology.serialized});
 
