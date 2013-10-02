@@ -1,7 +1,4 @@
-import json
-from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponse
-from django.views.generic import TemplateView
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.conf import settings
@@ -67,6 +64,7 @@ class JSSettings(BaseJSSettings):
             colorspool=settings.LAND_COLORS_POOL,
         )
         dictsettings['version'] = __version__
+        dictsettings['urls']['path_graph'] = reverse('core:path_json_graph')
         return dictsettings
 
 
