@@ -4,12 +4,18 @@
  * (paths, aggregations, altimetric profile, etc.)
  */
 
-
-
-.marker-snapped { background-image: url('core/images/marker-snap.png') }
-.leaflet-editing-icon.marker-snapped { background-image: none; background-color: yellow; }
-.marker-source.marker-snapped { background-image: url('core/images/marker-source-snap.png') }
-.marker-target.marker-snapped { background-image: url('core/images/marker-target-snap.png') }
+.leaflet-editing-icon.marker-snapped {
+    background-image: none; background-color: yellow;
+}
+.marker-snapped {
+    background-image: url('core/images/marker-snap.png');
+}
+.marker-source.marker-snapped {
+    background-image: url('core/images/marker-source-snap.png');
+}
+.marker-target.marker-snapped {
+    background-image: url('core/images/marker-target-snap.png');
+}
 
 .marker-drag { background-image: url('core/images/marker-drag.png') }
 .marker-drag.marker-snapped { background-image: url('core/images/marker-drag-snap.png') }

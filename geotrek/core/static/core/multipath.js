@@ -38,6 +38,10 @@ L.Handler.TopologyPoint = L.Draw.Marker.extend({
                 this.fire('added', {marker:e.marker});
         }, this);
     },
+
+    restoreTopology: function (topo) {
+        throw "TODO";
+    },
 });
 
 
@@ -45,14 +49,18 @@ L.Handler.TopologyPoint = L.Draw.Marker.extend({
 L.Control.Multipath = L.Control.extend({
     includes: L.Mixin.ActivableControl,
 
-    options: {
-        position: 'topright',
+    statics: {
+        TITLE: 'Route',
     },
 
-    initialize: function (map, graph_layer, snapObserver, options) {
+    options: {
+        position: 'topleft',
+    },
+
+    initialize: function (map, graph_layer, guidesLayer, options) {
         L.Control.prototype.initialize.call(this, options);
         this.handler = new L.Handler.MultiPath(
-            map, graph_layer, snapObserver, this.options.handler
+            map, graph_layer, guidesLayer, this.options.handler
         );
     },
 
@@ -125,11 +133,11 @@ L.ActivableMarker = L.Marker.extend({
 L.Handler.MultiPath = L.Handler.extend({
     includes: L.Mixin.Events,
 
-    initialize: function (map, graph_layer, snapObserver, options) {
+    initialize: function (map, graph_layer, guidesLayer, options) {
         this.map = map;
         this._container = map._container;
         this.graph_layer = graph_layer;
-        this.snapObserver = snapObserver;
+        this.guidesLayer = guidesLayer;
         this.options = options;
 
         this.graph = null;
@@ -571,10 +579,10 @@ L.Handler.MultiPath = L.Handler.extend({
 
     getMarkers: function() {
         var self = this;
-        
-        var map = this.map, 
-            snapObserver = this.snapObserver;
-        
+
+        var map = this.map,
+            guidesLayer = this.guidesLayer;
+
         // snapObserver and map are required to setup snappable markers
         // returns marker with an on('snap' possibility ?
         var dragging = false;
@@ -598,7 +606,7 @@ L.Handler.MultiPath = L.Handler.extend({
             isDragging: isDragging,
             makeSnappable: function(marker) {
                 marker.editing = new L.Handler.MarkerSnap(map, marker);
-                snapObserver.add(marker);
+                marker.editing.addGuideLayer(guidesLayer);
                 marker.activate_cbs.push(activate);
                 marker.deactivate_cbs.push(deactivate);
 
@@ -606,21 +614,14 @@ L.Handler.MultiPath = L.Handler.extend({
             },
             generic: function (latlng, layer, classname, snappable) {
                 snappable = snappable === undefined ? true : snappable;
-                
+
                 var marker = new L.ActivableMarker(latlng, {
-                    'draggable': true, 
-                    'icon': new L.Icon({
-                        iconUrl: self.options.iconUrl,
-                        shadowUrl: self.options.shadowUrl,
-                        iconSize: new L.Point(25, 41),
-                        iconAnchor: new L.Point(13, 41),
-                        popupAnchor: new L.Point(1, -34),
-                        shadowSize: new L.Point(41, 41)
-                    })
+                    'draggable': true,
+                    'icon': L.divIcon({className: classname,
+                                       iconSize: [25, 41],
+                                       iconAnchor: [12, 41]})
                 });
                 map.addLayer(marker);
-
-                $(marker._icon).addClass(classname);
 
                 if (snappable)
                     this.makeSnappable(marker);
@@ -637,8 +638,8 @@ L.Handler.MultiPath = L.Handler.extend({
                 var marker = new L.ActivableMarker(latlng, {
                     'draggable': true,
                     'icon': L.divIcon({className: 'marker-drag',
-                                       iconSize: new L.Point(18, 18),
-                                       iconAnchor: new L.Point(9, 9)})
+                                       iconSize: [18, 18],
+                                       iconAnchor: [9, 9]})
                 });
 
                 map.addLayer(marker);
