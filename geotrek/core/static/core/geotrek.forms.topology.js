@@ -1,7 +1,11 @@
 L.FieldStore.TopologyStore = L.FieldStore.extend({
 
     _deserialize: function (value) {
-        return value ? JSON.parse(value) : null;
+        if (value === undefined || value === '')
+            return null;
+        if (typeof value == 'string')
+            return JSON.parse(value);
+        return value;
     },
 
     _serialize: function (layer) {

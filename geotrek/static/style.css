@@ -26,7 +26,7 @@ a.leaflet-draw-toolbar-button-enabled, .leaflet-control.enabled a {
 
 /* Point topology */
 
-.marker-add {
+.marker-point {
     padding-left: 25px;
     padding-top: 41px;
     background-image: url('core/images/marker-add.png') ;
@@ -36,13 +36,18 @@ a.leaflet-draw-toolbar-button-enabled, .leaflet-control.enabled a {
 
 }
 
-.marker-snapped {
+.marker-point.marker-snapped {
     background-image: url('core/images/marker-snap.png');
 }
 
+/* Line topology */
 
 .marker-source {
     background-image: url('mapentity/images/marker-source.png');
+}
+
+.marker-drag {
+    background-image: url('core/images/marker-drag.png')
 }
 
 .marker-target {
@@ -56,7 +61,6 @@ a.leaflet-draw-toolbar-button-enabled, .leaflet-control.enabled a {
     background-image: url('core/images/marker-target-snap.png');
 }
 
-.marker-drag { background-image: url('core/images/marker-drag.png') }
 .marker-drag.marker-snapped { background-image: url('core/images/marker-drag-snap.png') }
 
 .linetopology-control {

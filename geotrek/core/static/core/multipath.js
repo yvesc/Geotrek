@@ -128,7 +128,7 @@ L.Handler.PointTopology = L.Draw.Marker.extend({
 
     _initMarker: function (marker) {
         marker.addTo(this._map);
-        L.DomUtil.addClass(marker._icon, 'marker-add');
+        L.DomUtil.addClass(marker._icon, 'marker-point');
         marker.editing = new L.Handler.MarkerSnap(this._map, marker);
         marker.editing.addGuideLayer(this._guidesLayer);
         marker.editing.enable();
