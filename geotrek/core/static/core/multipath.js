@@ -112,6 +112,9 @@ L.Handler.PointTopology = L.Draw.Marker.extend({
     restoreTopology: function (topo) {
         var marker = L.marker([topo.lat, topo.lng]);
         this._initMarker(marker);
+        if (topo.snap) {
+            this._marker.fire('move');  // snap to closest
+        }
     },
 
     _onDrawn: function (e) {

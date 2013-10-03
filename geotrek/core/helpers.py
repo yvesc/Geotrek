@@ -149,6 +149,8 @@ class TopologyHelper(object):
             geom = topology.geom_as_point()
             point = geom.transform(settings.API_SRID, clone=True)
             objdict = dict(kind=topology.kind, lng=point.x, lat=point.y)
+            if topology.offset == 0:
+                objdict['snap'] = topology.aggregations.all()[0].path.pk
         else:
             # Line topology
             # Fetch properly ordered aggregations
