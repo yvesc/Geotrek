@@ -315,7 +315,7 @@ class MapEntityList(ModelMetaMixin, ListView):
 
     def __init__(self, *args, **kwargs):
         super(MapEntityList, self).__init__(*args, **kwargs)
-        self._filterform = None
+        self._filterform = self.filterform()
         if self.model is None:
             self.model = self.queryset.model
 
