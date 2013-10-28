@@ -127,7 +127,7 @@ class Path(MapEntityMixin, AltimetryMixin, TimeStampedModel, StructureRelated):
                                    verbose_name=_("Datasource"), db_column='source')
     stake = models.ForeignKey('Stake',
                               null=True, blank=True, related_name='paths',
-                              verbose_name=_("Stake"), db_column='enjeu')
+                              verbose_name=_("Maintenance stake"), db_column='enjeu')
     usages = models.ManyToManyField('Usage',
                                     blank=True, null=True, related_name="paths",
                                     verbose_name=_(u"Usages"), db_table="l_r_troncon_usage")
@@ -307,7 +307,7 @@ class Topology(AltimetryMixin, TimeStampedModel, NoDeleteMixin):
         """
         self.offset = other.offset
         self.geom = other.geom
-        self.save()
+        self.save(update_fields=['offset', 'geom'])
         PathAggregation.objects.filter(topo_object=self).delete()
         # The previous operation has put deleted = True (in triggers)
         self.deleted = False
@@ -320,7 +320,7 @@ class Topology(AltimetryMixin, TimeStampedModel, NoDeleteMixin):
             self.add_path(aggr.path, aggr.start_position, aggr.end_position, aggr.order, reload=False)
         if delete:
             other.delete(force=True)  # Really delete it from database
-        self.save()
+        self.save(update_fields=['deleted'])
         return self
 
     def reload(self, fromdb=None):
@@ -449,9 +449,9 @@ class Stake(StructureRelated):
 
     class Meta:
         db_table = 'l_b_enjeu'
-        verbose_name = _(u"Stake")
-        verbose_name_plural = _(u"Stakes")
-        ordering = ['stake']
+        verbose_name = _(u"Maintenance stake")
+        verbose_name_plural = _(u"Maintenance stakes")
+        ordering = ['id']
 
     def __lt__(self, other):
         if other is None:
@@ -508,7 +508,7 @@ class Network(StructureRelated):
         return self.network
 
 
-class Trail(MapEntityMixin, StructureRelated):
+class Trail(MapEntityMixin, TimeStampedModel, StructureRelated):
 
     name = models.CharField(verbose_name=_(u"Name"), max_length=64, db_column='nom')
     departure = models.CharField(verbose_name=_(u"Departure"), max_length=64, db_column='depart')

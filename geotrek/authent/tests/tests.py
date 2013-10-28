@@ -6,7 +6,6 @@ from django.test import TestCase
 from django.test.utils import override_settings
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.utils.translation import gettext as _
 
 from geotrek.authent.models import UserProfile
 from geotrek.authent.factories import UserFactory
@@ -36,33 +35,33 @@ class UserProfileTest(TestCase):
         self.assertTrue(success)
         response = self.client.get(reverse('core:path_list'))
         self.assertEqual(200, response.status_code)
-        self.assertTrue(str(_("Logout")) in response.content)
+        self.assertContains(response, "Logout")
 
         # Change user lang
-        self.assertNotEqual(settings.LANGUAGE_CODE, u"en")
+        self.assertNotEqual(settings.LANGUAGE_CODE, u"fr")
         userprofile = UserProfile.objects.get(user=self.user)
-        userprofile.language = u"en"
+        userprofile.language = u"fr"
         userprofile.save()
-        self.assertEqual(self.user.profile.language, u"en")
+        self.assertEqual(self.user.profile.language, u"fr")
         # No effect if no logout
         response = self.client.get(reverse('core:path_list'))
-        self.assertTrue(str(_("Logout")) in response.content)
+        self.assertContains(response, "Logout")
 
         self.client.logout()
 
         self.client.login(username=self.user.username, password=u"Bar")
         response = self.client.get(reverse('core:path_list'))
-        self.assertEqual(self.client.session['django_language'], u"en")
-        self.assertTrue("Logout" in response.content)
+        self.assertEqual(self.client.session['django_language'], u"fr")
+        self.assertContains(response, u"Déconnexion")
 
     def test_admin(self):
         self.assertFalse(self.user.is_staff)
         success = self.client.login(username=self.user.username, password=u"Bar")
         self.assertTrue(success)
         response = self.client.get(reverse('core:path_list'))
-        self.assertFalse(_("Admin") in response.content)
+        self.assertNotContains(response, '<a href="/admin/">Admin</a>')
 
         self.user.is_staff = True
         self.user.save()
         response = self.client.get(reverse('core:path_list'))
-        self.assertTrue(_("Admin") in response.content)
+        self.assertContains(response, '<a href="/admin/">Admin</a>')

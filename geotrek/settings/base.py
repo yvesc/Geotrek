@@ -3,7 +3,7 @@ import sys
 
 from django.contrib.messages import constants as messages
 
-from .. import __version__
+from geotrek import __version__
 from . import PROJECT_ROOT_PATH
 
 gettext_noop = lambda s: s
@@ -331,6 +331,7 @@ MAPENTITY_CONFIG = {
     'TEMP_DIR': '/tmp',
     'HISTORY_ITEMS_MAX': 7,
     'CONVERSION_SERVER': 'http://0.0.0.0:6543',
+    'CAPTURE_SERVER': 'http://0.0.0.0:8001',
     'ROOT_URL': ROOT_URL,
 }
 
@@ -339,6 +340,11 @@ DEFAULT_STRUCTURE_NAME = gettext_noop('Default')
 SNAP_DISTANCE = 30  # Distance of snapping in pixels
 
 ALTIMETRIC_PROFILE_PRECISION = 25  # Sampling precision in meters
+ALTIMETRIC_PROFILE_BACKGROUND = 'white'
+ALTIMETRIC_PROFILE_COLOR = '#5393E8'
+ALTIMETRIC_PROFILE_HEIGHT = 400
+ALTIMETRIC_PROFILE_WIDTH = 800
+ALTIMETRIC_PROFILE_FONTSIZE = 25
 
 # Let this be defined at instance-level
 LEAFLET_CONFIG = {
