@@ -9,6 +9,7 @@ import json
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.db import connection
 from django.db.models.query import QuerySet
 from django.http import (HttpResponse, HttpResponseBadRequest,
                          HttpResponseNotFound, HttpResponseServerError)
@@ -179,6 +180,8 @@ def handler500(request, template_name='mapentity/500.html'):
     Templates: `500.html`
     Context: None
     """
+    # Abort transactions, if any
+    connection.close()
     # Try returning using a RequestContext
     try:
         context = RequestContext(request)
@@ -373,7 +376,7 @@ class MapEntityList(ModelMetaMixin, ListView):
 
     def __init__(self, *args, **kwargs):
         super(MapEntityList, self).__init__(*args, **kwargs)
-        self._filterform = None
+        self._filterform = self.filterform()
         if self.model is None:
             self.model = self.queryset.model
 
