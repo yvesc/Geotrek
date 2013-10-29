@@ -90,7 +90,7 @@ class TopologyReadonlyWidget(BaseTopologyWidget):
         Completely bypass widget rendering, and just render a geometry.
         """
         topology = value
-        if isinstance(topology, six.string_types):
+        if isinstance(topology, (six.string_types, int)):
             topology = self.deserialize(topology)
         context = {'object': topology.geom, 'mapname': name}
         return loader.render_to_string(self.template_name, context)
