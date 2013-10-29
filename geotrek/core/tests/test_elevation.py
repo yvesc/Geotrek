@@ -19,7 +19,6 @@ class ElevationTest(TestCase):
         for x in range(1, 4):
             for y in range(1, 4):
                 cur.execute('UPDATE mnt SET rast = ST_SetValue(rast, %s, %s, %s::float)', [x, y, x+y])
-        conn.commit_unless_managed()
 
         self.path = Path.objects.create(geom=LineString((1.5,1.5), (2.5,1.5), (1.5,2.5)))
 

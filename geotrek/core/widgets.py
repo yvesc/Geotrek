@@ -52,7 +52,10 @@ class BaseTopologyWidget(MapWidget):
     def deserialize(self, value):
         if isinstance(value, int):
             return Topology.objects.get(pk=value)
-        return Topology.deserialize(value)
+        try:
+            return Topology.deserialize(value)
+        except ValueError:
+            return None
 
     def render(self, name, value, attrs=None):
         attrs = attrs or {}
