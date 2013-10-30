@@ -79,6 +79,10 @@ body {
     background-position-y: 5px;
 }
 
+.table th, .table td {
+    padding: 4px;
+    line-height: 25px;
+}
 
 /***** Reusables ******/
 
