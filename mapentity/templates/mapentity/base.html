@@ -20,8 +20,8 @@
     <link rel="stylesheet" type="text/css" href="{% static "mapentity/dataTables/css/dataTables.bootstrap.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "mapentity/chosen/chosen.css" %}">
     {% leaflet_css %}
-    <link rel="stylesheet" href="{% static "mapentity/Leaflet.draw/leaflet.draw.css" %}"></link>
-    <link rel="stylesheet" href="{% static "mapentity/Leaflet.label/leaflet.label.css" %}"></link>
+    <link rel="stylesheet" href="{% static "mapentity/Leaflet.draw/leaflet.draw.css" %}" />
+    <link rel="stylesheet" href="{% static "mapentity/Leaflet.label/leaflet.label.css" %}" />
     <link rel="stylesheet" href="{% static "style.css" %}" />
     <link rel="stylesheet" href="{% static "mapentity/style.css" %}" />
     {% if not DEBUG %}
@@ -106,11 +106,11 @@
                   {% endif %}
                   <li class="{% block nav-logbook %}disabled{% endblock nav-logbook %}"><a href="#">{% trans "Logbook" %}</a></li>
                   <li class="divider"></li>
-                  
+
                   <li><a href="{% url 'logout' %}"><i class="icon-off"></i> {% trans "Logout" %}</a></li>
                </ul>
             </li>
-            {% endif %}  
+            {% endif %}
           </ul>
       </div>
     </div>
@@ -211,7 +211,7 @@
                             height = $(window).height() - top - parseFloat($(this).css('margin-top'))
                                                               - parseFloat($(this).css('margin-bottom'));
                         $(this).css('max-height', height + 'px');
-                        
+
                     });
                 }
                 setTimeout(fillmax, 0);
