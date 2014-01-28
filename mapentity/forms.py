@@ -86,7 +86,6 @@ class MapEntityForm(TranslatedModelForm):
     pk = forms.Field(required=False, widget=forms.Field.hidden_widget)
     model = forms.Field(required=False, widget=forms.Field.hidden_widget)
 
-    helper = FormHelper()
     fieldslayout = None
     geomfields = []
 
@@ -100,6 +99,9 @@ class MapEntityForm(TranslatedModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super(MapEntityForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_tag = True
 
         is_creation = self.instance.pk is None
 

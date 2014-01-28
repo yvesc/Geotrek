@@ -28,6 +28,10 @@ body {
     z-index: 9999;
 }
 
+select[multiple] {
+    min-height: 180px;
+}
+
 /***** Chosen override ******/
 
 .chzn-container-active .chzn-choices {
@@ -36,7 +40,7 @@ body {
 
 .chzn-container .chzn-results .highlighted {
     background-color: #919191;
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#919191', endColorstr='#747474', GradientType=0 );  
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#919191', endColorstr='#747474', GradientType=0 );
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #919191), color-stop(90%, #747474));
     background-image: -webkit-linear-gradient(top, #919191 20%, #747474 90%);
     background-image: -moz-linear-gradient(top, #919191 20%, #747474 90%);
@@ -79,6 +83,10 @@ body {
     background-position-y: 5px;
 }
 
+.table th, .table td {
+    padding: 4px;
+    line-height: 25px;
+}
 
 /***** Reusables ******/
 
@@ -99,10 +107,10 @@ body {
 /***** Alerts ******/
 
 #alert-box {
-	position: absolute; 
-	top: 3px; 
-	left: 50%; 
-	width: 50%; 
+	position: absolute;
+	top: 3px;
+	left: 50%;
+	width: 50%;
 	margin: 0 0 0 -25%;
 	z-index: 1000;
 }
@@ -161,7 +169,7 @@ body {
 .navbar .nav > li.history > a,
 .navbar .nav > li.history button:first-child {
     background-position-x: 2px;
-    background-position-y: 50%; 
+    background-position-y: 50%;
     background-repeat: no-repeat;
 }
 
@@ -268,7 +276,13 @@ tr.selected-row td {
     height: 95%;
 }
 
-#list-panel .table th, 
+@media (max-width: 1280px) {
+    #list-panel {
+        margin-left: 34px;
+    }
+}
+
+#list-panel .table th,
 #list-panel .table td {
     padding: 5px;
     white-space: nowrap;
@@ -290,12 +304,21 @@ tr.selected-row td {
     text-decoration: underline;
 }
 
+
+
+
 /* Left menu */
 #entitylist {
     position: absolute;
     top: 0px;
     left: 0;
     width: 60px;
+}
+
+@media (max-width: 1280px) {
+    #entitylist {
+        width: 32px;
+    }
 }
 
 #entitylist li img {
@@ -324,7 +347,7 @@ tr.selected-row td {
 	background-color: #F3F3F3;
 }
 
-#entitylist .nav-pills > .active > a, 
+#entitylist .nav-pills > .active > a,
 #entitylist .nav-pills > .active > a:hover {
     border-right: 1px solid #fff;
     background-color: #fff;
@@ -332,9 +355,14 @@ tr.selected-row td {
 }
 
 #entitylist .nav-pills > li > a > img  {
-	padding-bottom: 4px;
+    padding-bottom: 4px;
 }
 
+@media (max-width: 1280px) {
+    #entitylist .nav-pills > li > a > img  {
+        width: 30px;
+    }
+}
 
 
 
@@ -345,13 +373,13 @@ tr.selected-row td {
     height: inherit;
 }
 
-#list-download-toolbar, 
-#objects-list_filter, 
-div.dataTables_paginate { 
+#list-download-toolbar,
+#objects-list_filter,
+div.dataTables_paginate {
     position: absolute;
     bottom: 5px;
 }
-div.dataTables_paginate { 
+div.dataTables_paginate {
     bottom: 0px;
 }
 
@@ -366,6 +394,14 @@ div.dataTables_paginate {
 #objects-list_filter {
     left: 160px;
 }
+
+@media (max-width: 1280px) {
+    #objects-list_filter {
+        left: 130px;
+    }
+}
+
+
 
 
 /* Filters popover */
@@ -438,8 +474,8 @@ span.filter-info {
     padding-left: 40px;
 }
 
-.details-panel .table { 
-    table-layout: fixed; 
+.details-panel .table {
+    table-layout: fixed;
     margin-right: 10px;
 }
 
@@ -543,22 +579,109 @@ body.screamshot .leaflet-control-scale {
     margin-bottom: 55px;
 }
 
-.form-panel .tab-content .nav { 
+.form-panel .tab-content .nav {
     margin-bottom: 5px;
 }
 
-.form-panel .nav li:first-child {
-    margin-left: 160px;
+.form-panel .nav-tabs .error {
+    color: #B94A48;
 }
+
+label.requiredField {
+    font-weight: bold;
+}
+
+label.requiredField .asteriskField {
+    color: red;
+}
+
+.help-inline {
+    font-size: 0.7em;
+}
+
+.form-horizontal .control-group {
+    margin-bottom: 5px;
+}
+
+
+.form-horizontal .control-label {
+    width: 140px;
+}
+
+.form-horizontal .controls {
+    margin-left: 145px;
+}
+
+@media (max-width: 1280px) {
+
+    .form-horizontal .control-label {
+        width: 95px;
+    }
+
+    .form-horizontal .controls {
+        margin-left: 100px;
+    }
+}
+
+
+/*
+ * Form tabs Main/Advanced
+ */
+
+.form-horizontal .nav-tabs:first-child {
+    margin-left: 80px;
+}
+
+.form-panel .nav-tabs:first-child li:first-child {
+    margin-left: 100px;
+}
+
+@media (max-width: 1280px) {
+    .form-panel .nav-tabs:first-child li:first-child {
+        margin-left: 22px;
+    }
+}
+
+
+/*
+ * Multilang pills
+ */
 
 .form-panel .tab-content .nav-pills li a {
     padding-top: 2px;
     padding-bottom: 2px;
 }
 
-.form-panel .nav-tabs .error {
-    color: #B94A48;
+.form-panel .nav-pills {
+    margin-left: 145px;
 }
+
+@media (max-width: 1280px) {
+
+    .form-horizontal .nav-pills {
+        margin-left: 100px;
+    }
+}
+
+
+/*
+ * Many-to-many fields
+ */
+.form-row.inline.controls {
+    border: solid 1px lightgray;
+    padding: 5px;
+    margin: 1px;
+}
+
+.form-row.inline.controls:last-of-type {
+    border: none;
+}
+
+fieldset.formset .form-row:last-of-type a.delete-row {
+    display: none;
+}
+
+
 
 #geomfield {
     position: absolute;
@@ -570,6 +693,7 @@ body.screamshot .leaflet-control-scale {
 #geomfield .control-group,
 #geomfield .controls {
     height: 100%;
+    margin-left: 0;
 }
 
 #geomfield .control-group.error .help-block {
@@ -577,7 +701,7 @@ body.screamshot .leaflet-control-scale {
     position: absolute;
 }
 
-/* Tired of bootstrap ? 
+/* Tired of bootstrap ?
 TODO: please help;
  */
 #modelfields.span4 {
@@ -587,43 +711,13 @@ TODO: please help;
     width: 66%;
 }
 
-.form-horizontal #modelfields .nav-tabs {
-    margin-left: 80px;
-}
-
-.form-horizontal #geomfield .controls {
-    margin-left: 0px;
-}
-
 #geomfield label.control-label {
     position: absolute;
     z-index: 2000;
     background-color: rgba(255,255,255,0.7);
     padding: 5px;
     border-radius: 5px;
-    top: 5px;
-    left: 5px;
+    top: 9px;
+    left: 48px;
     width: auto;
-}
-
-label.requiredField {
-    font-weight: bold;
-}
-
-.help-inline {
-    font-size: 0.7em;
-}
-
-.form-horizontal .control-group {
-    margin-bottom: 5px;
-}
-
-.form-row.inline.controls {
-    border: solid 1px lightgray;
-    padding: 5px;
-    margin: 1px;
-}
-
-.form-row.inline.controls:last-of-type {
-    border: none;
 }
