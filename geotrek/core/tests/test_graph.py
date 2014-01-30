@@ -1,6 +1,6 @@
 import json
 
-from django.test import TestCase
+from django.test import TransactionTestCase
 from django.contrib.auth.models import User
 from django.contrib.gis.geos import LineString
 from django.core.urlresolvers import reverse
@@ -10,7 +10,7 @@ from geotrek.core.graph import graph_edges_nodes_of_qs
 from geotrek.core.models import Path
 
 
-class SimpleGraph(TestCase):
+class SimpleGraph(TransactionTestCase):
 
     def setUp(self):
         user = User.objects.create_user('homer', 'h@s.com', 'dooh')

@@ -1,7 +1,7 @@
 import json
 import math
 
-from django.test import TestCase
+from django.test import TransactionTestCase
 from django.conf import settings
 from django.contrib.gis.geos import Point, LineString
 
@@ -11,7 +11,7 @@ from geotrek.core.factories import (PathFactory, PathAggregationFactory,
 from geotrek.core.models import Path, Topology, PathAggregation
 
 
-class TopologyTest(TestCase):
+class TopologyTest(TransactionTestCase):
 
     def test_geom_null_is_safe(self):
         t = TopologyFactory.create()
@@ -61,7 +61,7 @@ class TopologyTest(TestCase):
         self.assertEqual(1, len(Topology.objects.filter(kind='LANDEDGE')))
 
 
-class TopologyDeletionTest(TestCase):
+class TopologyDeletionTest(TransactionTestCase):
 
     def test_deleted_is_hidden_but_still_exists(self):
         topology = TopologyFactory.create(offset=1)
@@ -92,7 +92,7 @@ class TopologyDeletionTest(TestCase):
         self.assertTrue(topology.deleted)
 
 
-class TopologyMutateTest(TestCase):
+class TopologyMutateTest(TransactionTestCase):
 
     def test_mutate(self):
         topology1 = TopologyFactory.create(no_path=True)
@@ -133,7 +133,7 @@ class TopologyMutateTest(TestCase):
         self.assertEqual(len(topology2.paths.all()), 3)
 
 
-class TopologyPointTest(TestCase):
+class TopologyPointTest(TransactionTestCase):
 
     def test_point_geom_3d(self):
         """
@@ -285,7 +285,7 @@ class TopologyPointTest(TestCase):
         self.assertItemsEqual(t.paths.all(), [p1, p2, p3])
 
 
-class TopologyLineTest(TestCase):
+class TopologyLineTest(TransactionTestCase):
 
     def test_topology_geom(self):
         p1 = PathFactory.create(geom=LineString((0, 0), (2, 2)))
@@ -425,7 +425,7 @@ class TopologyLineTest(TestCase):
         self.assertEqual(t2_agg.end_position, 0.25)
 
 
-class TopologyCornerCases(TestCase):
+class TopologyCornerCases(TransactionTestCase):
     def test_opposite_paths(self):
         """
                 A  C
@@ -516,7 +516,7 @@ class TopologyCornerCases(TestCase):
                                                (7.5, 0)))
 
 
-class TopologyLoopTests(TestCase):
+class TopologyLoopTests(TransactionTestCase):
     def test_simple_loop(self):
         """
            ==========
@@ -643,7 +643,7 @@ class TopologyLoopTests(TestCase):
         self.assertEqual(topo.geom, LineString((22.0, 0.0), (20.0, 0.0), (10.0, 0.0), (9.0, 0.0)))
 
 
-class TopologySerialization(TestCase):
+class TopologySerialization(TransactionTestCase):
 
     def test_serialize_line(self):
         path = PathFactory.create()
@@ -756,7 +756,7 @@ class TopologySerialization(TestCase):
         self.assertTrue(almostequal(start_before, start_after), '%s != %s' % (start_before, start_after))
         self.assertTrue(almostequal(end_before, end_after), '%s != %s' % (end_before, end_after))
 
-class TopologyOverlappingTest(TestCase):
+class TopologyOverlappingTest(TransactionTestCase):
 
     def setUp(self):
         self.path1 = PathFactory.create(geom=LineString((0, 0), (0, 10)))

@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-from django.test import TestCase
+from django.test import TransactionTestCase
 from django.contrib.gis.geos import LineString, Point
 from django.conf import settings
 
 from geotrek.common.utils import almostequal
 
 from geotrek.core.factories import PathFactory, TopologyFactory, NetworkFactory, UsageFactory
-from geotrek.core.models import Path, Topology, PathAggregation
+from geotrek.core.models import Path, Topology
 
 
-class SplitPathTest(TestCase):
+class SplitPathTest(TransactionTestCase):
     def test_split_attributes(self):
         ab = PathFactory.create(name="AB", geom=LineString((0, 0), (4, 0)))
         ab.networks.add(NetworkFactory.create())
@@ -342,7 +342,7 @@ class SplitPathTest(TestCase):
         self.assertEqual(len(Path.objects.filter(name="EF")), 3)
 
 
-class SplitPathLineTopologyTest(TestCase):
+class SplitPathLineTopologyTest(TransactionTestCase):
 
     def test_split_tee_1(self):
         """
@@ -784,7 +784,7 @@ class SplitPathLineTopologyTest(TestCase):
         self.assertTrue(topology.geom.equals(topogeom))
 
 
-class SplitPathPointTopologyTest(TestCase):
+class SplitPathPointTopologyTest(TransactionTestCase):
 
     def test_split_tee_1(self):
         """
@@ -1153,7 +1153,7 @@ class SplitPathPointTopologyTest(TestCase):
         self.assertEqual((0.0, 0.0), (aggr_cd.start_position, aggr_cd.end_position))
 
 
-class SplitPathGenericTopologyTest(TestCase):
+class SplitPathGenericTopologyTest(TransactionTestCase):
 
     def test_add_simple_path(self):
         """

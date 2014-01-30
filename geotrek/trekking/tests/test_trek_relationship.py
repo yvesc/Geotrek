@@ -1,10 +1,10 @@
-from django.test import TestCase
-from django.db import IntegrityError
+from django.test import TransactionTestCase
+from django.db import DatabaseError
 
 from ..factories import TrekFactory, TrekRelationshipFactory
 
 
-class TrekRelationshipsTestCase(TestCase):
+class TrekRelationshipsTestCase(TransactionTestCase):
 
     def test_relationships(self):
         trek1 = TrekFactory()
@@ -23,4 +23,4 @@ class TrekRelationshipsTestCase(TestCase):
         trek2 = TrekFactory()
         TrekRelationshipFactory(trek_a=trek1, trek_b=trek2)
         # This should fail, since it already exists
-        self.assertRaises(IntegrityError, lambda: TrekRelationshipFactory(trek_a=trek2, trek_b=trek1))
+        self.assertRaises(DatabaseError, lambda: TrekRelationshipFactory(trek_a=trek2, trek_b=trek1))

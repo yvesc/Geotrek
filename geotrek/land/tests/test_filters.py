@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.test import TestCase
+from django.test import TransactionTestCase
 
 from geotrek.land.factories import (
     PhysicalEdgeFactory, LandEdgeFactory, CompetenceEdgeFactory,
@@ -9,7 +9,7 @@ from geotrek.land.factories import (
 
 from geotrek.core.factories import PathFactory, PathAggregationFactory, getRandomLineStringInBounds
 
-class LandFiltersTest(TestCase):
+class LandFiltersTest(TransactionTestCase):
 
     filterclass = None
 
